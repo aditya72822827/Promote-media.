@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { text-align: center; font-family: Arial, sans-serif; }
-        input { padding: 10px; margin: 10px; }
-        button { padding: 10px; background-color: blue; color: white; }
+        input { padding: 10px; margin: 10px; width: 200px; }
+        button { padding: 10px; background-color: blue; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: darkblue; }
     </style>
 </head>
 <body>
@@ -18,8 +19,13 @@
 
     <script>
         function checkStatus() {
-            var code = document.getElementById("userCode").value;
-            var apiUrl = https://script.google.com/macros/s/AKfycbxVjhQ6CGP1m_Gr0WMejFbdlymONce-UFXHjanqJJzxBcRRM8mIv89jqMASn45ZDdzc/exec ?code=" + code; 
+            var code = document.getElementById("userCode").value.trim();
+            if (code === "") {
+                document.getElementById("result").innerText = "Please enter a code!";
+                return;
+            }
+
+            var apiUrl = "https://script.google.com/macros/s/AKfycbxVjhQ6CGP1m_Gr0WMejFbdlymONce-UFXHjanqJJzxBcRRM8mIv89jqMASn45ZDdzc/exec?code=" + encodeURIComponent(code);
 
             fetch(apiUrl)
                 .then(response => response.json())
@@ -27,11 +33,16 @@
                     if (data.error) {
                         document.getElementById("result").innerText = "Invalid Code!";
                     } else {
-                        document.getElementById("result").innerText = 
-                            "Name: " + data.name + "\nStatus: " + data.status + "\nRemarks: " + data.remarks;
+                        document.getElementById("result").innerHTML = 
+                            "<b>Name:</b> " + data.name + "<br>" +
+                            "<b>Status:</b> " + data.status + "<br>" +
+                            "<b>Remarks:</b> " + data.remarks;
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    document.getElementById("result").innerText = "Error fetching data!";
+                    console.error('Error:', error);
+                });
         }
     </script>
 </body>
