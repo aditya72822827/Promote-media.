@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check My Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        input { padding: 10px; margin: 10px; }
+        button { padding: 10px; background-color: blue; color: white; }
+    </style>
+</head>
+<body>
+    <h2>Enter Your Code</h2>
+    <input type="text" id="userCode" placeholder="Enter Code">
+    <button onclick="checkStatus()">Check Status</button>
+    
+    <h3 id="result"></h3>
+
+    <script>
+        function checkStatus() {
+            var code = document.getElementById("userCode").value;
+            var apiUrl = https://script.google.com/macros/s/AKfycbxVjhQ6CGP1m_Gr0WMejFbdlymONce-UFXHjanqJJzxBcRRM8mIv89jqMASn45ZDdzc/exec ?code=" + code; 
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("result").innerText = "Invalid Code!";
+                    } else {
+                        document.getElementById("result").innerText = 
+                            "Name: " + data.name + "\nStatus: " + data.status + "\nRemarks: " + data.remarks;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
